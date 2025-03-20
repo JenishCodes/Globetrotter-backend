@@ -4,7 +4,7 @@ from functools import wraps
 from flask import Blueprint
 
 from app.jwt import token_required
-from app.routes import auths, questions, users
+from app.routes import auths, questions, users, sessions
 
 
 # Initialize the Blueprint for user-related users
@@ -12,6 +12,7 @@ main = Blueprint("main", __name__)
 auth = Blueprint("auth", __name__, url_prefix="/auth")
 question = Blueprint("question", __name__, url_prefix="/question")
 user = Blueprint("user", __name__, url_prefix="/user")
+session = Blueprint("session", __name__, url_prefix="/session")
 
 
 # Error handler for all routes
@@ -84,3 +85,26 @@ user.add_url_rule(
     view_func=handle_exception(users.generate_image),
     methods=["GET"],
 )
+
+
+session.add_url_rule(
+    "/<string:session_id>",
+    view_func=handle_exception(token_required(sessions.get_session)),
+    methods=["GET"],
+)
+session.add_url_rule(
+    "/",
+    view_func=handle_exception(token_required(sessions.create_session)),
+    methods=["POST"],
+)
+session.add_url_rule(
+    "/<string:session_id>/question/<string:ord>",
+    view_func=handle_exception(token_required(sessions.get_session_question)),
+    methods=["GET"],
+)
+session.add_url_rule(
+    "/<string:session_id>",
+    view_func=handle_exception(token_required(sessions.increment_current_question)),
+    methods=["PUT"],
+)
+

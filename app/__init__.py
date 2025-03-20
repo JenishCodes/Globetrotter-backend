@@ -26,12 +26,13 @@ def create_app():
 
 def load_app_modules(app):
     # Register routes
-    from app.routes import main, auth, question, user
+    from app.routes import main, auth, question, user, session
 
     app.register_blueprint(main)
     app.register_blueprint(auth)
     app.register_blueprint(question)
     app.register_blueprint(user)
+    app.register_blueprint(session)
 
 
 def greceful_shutdown(_, __):
