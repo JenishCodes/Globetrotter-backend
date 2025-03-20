@@ -11,6 +11,3 @@ with app.app_context():
 # Handle graceful shutdown signals
 signal.signal(signal.SIGTERM, greceful_shutdown)
 signal.signal(signal.SIGINT, greceful_shutdown)
-
-if __name__ == "__main__":
-    app.run()
